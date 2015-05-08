@@ -2,43 +2,56 @@
  * Program Name: cis27Spring2015Klotski.c
  * Discussion:   
  * Written By:   xxxxxxxxxxxx
- * Date:         2015/05/07
+ * Date:         2015/04/30
  */
 
 #include <iostream>
-#include "Block.h" // Class header file for block objects
+#include <iomanip>
+#include "Block.h"
 
 using namespace std;
 
+void searchAry(char, Block**, int, int, int*, int*);
+
 int main() {
-  // Declare and define constant variables to store a 2D array
-  // that has a border around where the blocks will be
-  // This block of code is for 2x2 blocks only
-	const int rows = 6;
-	const int cols = 5;
-	char** fillAry; // Declare a double pointer variable to store 2D matrix
+	char blockToMove = NULL;
+	char moveDirection = NULL;
+	int xPos = NULL; // Poisition of the block found after search
+	int yPos = NULL;
+	const int rows = 7; // Size of the board that contains the objects
+	const int cols = 6;
+	// char** fillAry; // Pointer that stores address of a 2D array containing chars
 
-	Block myBoard[rows][cols];
-
-	Block block1('E');
-	Block block2('R');
-	Block block3('T');
-	Block block4('Y');
-	Block block5('U');
-	Block block6('I');
-	Block block7('L');
-	Block block8('P');
-	Block block9('F');
-	Block block10('G');
-	Block block11('H');
-	Block block12('J');
-	Block block13('K');
-	Block block14('M');
-	Block block15('N');
-	Block block16('O');
+	//Block myBoard[rows][cols];
+	Block **myBoard = new Block *[rows]; // Dynamically allocate memory to board containing objects
+	for (int i = 0; i < rows; i++) {
+		myBoard[i] = new Block[cols];
+	}
+	
+	// Declare and define objects of 2x2 Block objects
+	Block block1('A');
+	Block block2('B');
+	Block block3('C');
+	Block block4('D');
+	Block block5('E');
+	Block block6('F');
+	Block block7('G');
+	Block block8('H');
+	Block block9('I');
+	Block block10('J');
+	Block block11('K');
+	Block block12('L');
+	Block block13('M');
+	Block block14('N');
+	Block block15('O');
+	Block block16('P');
 	Block block17('Q');
-	Block block18('Z');
-
+	Block block18('R');
+	Block block19(' ');
+	Block block20(' ');
+	Block tempBlock;
+	
+	// Put the block objects in the board
 	myBoard[1][1] = block1;
 	myBoard[1][2] = block2;
 	myBoard[1][3] = block3;
@@ -57,9 +70,12 @@ int main() {
 	myBoard[4][4] = block16;
 	myBoard[5][1] = block17;
 	myBoard[5][4] = block18;
+	myBoard[5][2] = block19;
+	myBoard[5][3] = block20;
 	
-	// Display the Block contained at [1][1] in the myBoard array
-	fillAry = myBoard[1][1].getArray();
+	/*
+	// Display a board Block object
+	fillAry = myBoard[5][2].getArray();
 	
 	for (int i = 0; i < 2; i++) {
 		for (int j = 0; j < 2; j++) {
@@ -67,25 +83,95 @@ int main() {
 		}
 		cout << endl;
 	}
+	*/
+
+	// Run the puzzle
+	do {
+		// TODO
+		// print board
+		// input piece to move
+		// input direction
+		// q to quit
+		cout << "Enter direction: ";
+		cin >> moveDirection;
+		if (toupper(moveDirection) != 'Q') {
+			do {
+				cout << "Enter piece to move: ";
+				cin >> blockToMove;
+			} while (toupper(blockToMove) < 'A' || toupper(blockToMove) > 'R');
+		
+			// Search the board for the block and store xPos and yPos
+			searchAry(blockToMove, myBoard, rows, cols, &xPos, &yPos);
+		}
+		//cout << "xpos = " << xPos << " ypos = " << yPos << endl;
+		switch (toupper(moveDirection)) {
+			case 'Q':
+				break;
+			case 'W':
+				// Check if move is legal
+				if (myBoard[xPos][yPos - 1].getFill() == ' ') {
+					// swap
+					tempBlock.setFill(myBoard[xPos][yPos].getFill());
+					tempBlock.fillBlock();
+					myBoard[xPos][yPos] = myBoard[xPos][yPos - 1];
+					myBoard[xPos][yPos - 1] = tempBlock;
+				}
+				break;
+			case 'A':
+				// Check if move is legal
+				if (myBoard[xPos - 1][yPos].getFill() == ' ') {
+					// swap
+					tempBlock.setFill(myBoard[xPos][yPos].getFill());
+					tempBlock.fillBlock();
+					myBoard[xPos][yPos] = myBoard[xPos - 1][yPos];
+					myBoard[xPos - 1][yPos] = tempBlock;
+				}
+				// Move the block
+				break;
+			case 'S':
+				// Check if move is legal
+				if (myBoard[xPos][yPos + 1].getFill() == ' ') {
+					// swap
+					tempBlock.setFill(myBoard[xPos][yPos].getFill());
+					tempBlock.fillBlock();
+					myBoard[xPos][yPos] = myBoard[xPos][yPos + 1];
+					myBoard[xPos][yPos + 1] = tempBlock;
+				}
+				break;
+			case 'D':
+				// Check if move is legal
+				if (myBoard[xPos + 1][yPos].getFill() == ' ') {
+					// swap
+					tempBlock.setFill(myBoard[xPos][yPos].getFill());
+					tempBlock.fillBlock();
+					myBoard[xPos][yPos] = myBoard[xPos + 1][yPos];
+					myBoard[xPos + 1][yPos] = tempBlock;
+				}
+				break;
+			default:
+				cout << "\nInvalid direction.\n";
+				break;
+		}
+	} while (toupper(moveDirection) != 'Q');
 	/*
-	// This commented out block of code is for blocks of
-	// sizes 2x4, 2x2, and 4x4.  There also is two 2x2
-	// blocks of NULL character (default constructor).
+	// Declare and define objects of various sizes
+	// This block of code is an example but probably won't be used
+	// since I am going to put blocks together somehow when moving
+	// blocks that are larger than the default size
+	Block myBlock1('A', 2, 4);
+	Block myBlock2('B', 2, 4);
+	Block myBlock3('C', 2, 4);
+	Block myBlock4('D', 2, 4);
+	Block myBlock5('E');
+	Block myBlock6('F');
+	Block myBlock7('G');
+	Block myBlock8('H');
+	Block myBlock9('I', 4, 2);
+	Block myBlock10('J', 4, 4);
+	Block myBlockBlank1(' ');
+	Block myBlockBlank2(' ');
 	
-	// Create block pieces (objects)
-	Block myBlock1('E', 2, 4);
-	Block myBlock2('T', 2, 4);
-	Block myBlock3('Y', 2, 4);
-	Block myBlock4('I', 2, 4);
-	Block myBlock5('F');
-	Block myBlock6('G');
-	Block myBlock7('L');
-	Block myBlock8('P');
-	Block myBlock9('U', 4, 2);
-	Block myBlock10('R', 4, 4);
-	Block myBlockNULL1();
-	Block myBlockNULL2();
-	// Display all of the block pieces (objects)
+	// Print the blocks
 	myBlock1.printBlock();
 	cout << endl;
 	myBlock2.printBlock();
@@ -107,4 +193,18 @@ int main() {
 	myBlock10.printBlock();
 	*/
 	return 0;
+}
+
+void searchAry(char blockToMove, Block** boardAry, int rows, int cols, int *xPos, int *yPos) {
+	int sentinel = 0;
+
+	for (int i = 0; sentinel == 0 && i < rows; i++) {
+		for (int j = 0; sentinel == 0 && j < cols; j++) {
+			if (sentinel == 0 && boardAry[i][j].getFill() == toupper(blockToMove)) {
+				sentinel = 1;
+				*xPos = i;
+				*yPos = j;
+			}
+		}
+	}
 }
