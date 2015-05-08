@@ -12,8 +12,14 @@
 using namespace std;
 
 void searchAry(char, Block**, int, int, int*, int*);
+void runBoardGame(void);
 
 int main() {
+	runBoardGame();
+	return 0;
+}
+
+void runBoardGame() {
 	char blockToMove = NULL;
 	char moveDirection = NULL;
 	int xPos = NULL; // Poisition of the block found after search
@@ -192,7 +198,6 @@ int main() {
 	cout << endl;
 	myBlock10.printBlock();
 	*/
-	return 0;
 }
 
 void searchAry(char blockToMove, Block** boardAry, int rows, int cols, int *xPos, int *yPos) {
