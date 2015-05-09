@@ -118,7 +118,7 @@ void runBoardGame() {
 		// input piece to move
 		// input direction
 		// q to quit
-		cout << "Enter direction: ";
+		cout << "Enter direction (Q to quit): ";
 		cin >> moveDirection;
 		if (toupper(moveDirection) != 'Q') {
 			do {
