@@ -91,6 +91,26 @@ void runBoardGame() {
 	}
 	*/
 
+	/*
+	
+	A  BC  D
+	E  FG  H
+	
+	I  JK  L
+	M  N O P
+
+	Q  o o R
+
+	2x2: N,O,Q,R
+
+	4x2: AE, DH, IM, LP
+	
+	2x4: JK
+	
+	4x4: BCFG
+	
+	*/
+
 	// Run the puzzle
 	do {
 		// TODO
@@ -115,13 +135,75 @@ void runBoardGame() {
 				break;
 			case 'W':
 				// Check if move is legal
-				if (myBoard[xPos][yPos - 1].getFill() == ' ') {
-					// swap
-					tempBlock.setFill(myBoard[xPos][yPos].getFill());
-					tempBlock.fillBlock();
-					myBoard[xPos][yPos] = myBoard[xPos][yPos - 1];
-					myBoard[xPos][yPos - 1] = tempBlock;
+				switch (toupper(blockToMove)) {
+					case 'N':
+					case 'O':
+					case 'Q':
+					case 'R':
+						if (myBoard[xPos][yPos - 1].getFill() == ' ') {
+						// swap
+						tempBlock.setFill(myBoard[xPos][yPos].getFill());
+						tempBlock.fillBlock();
+						myBoard[xPos][yPos] = myBoard[xPos][yPos - 1];
+						myBoard[xPos][yPos - 1] = tempBlock;
+						}
+						break;
+					case 'J': // JK horizontal block
+						if (myBoard[xPos][yPos - 1].getFill() == ' ' &&
+							myBoard[xPos + 1][yPos - 1].getFill() == ' ') {
+								tempBlock.setFill(myBoard[xPos][yPos].getFill());
+								tempBlock.fillBlock();
+								myBoard[xPos][yPos] = myBoard[xPos][yPos - 1];
+								myBoard[xPos][yPos - 1] = tempBlock;
+
+								tempBlock.setFill(myBoard[xPos + 1][yPos].getFill());
+								tempBlock.fillBlock();
+								myBoard[xPos + 1][yPos] = myBoard[xPos + 1][yPos - 1];
+								myBoard[xPos + 1][yPos - 1] = tempBlock;
+						}
+						break;
+					case 'A': // vertical blocks A/E, D/H, I/M, L/P
+					case 'D':
+					case 'I':
+					case 'L':
+						if (myBoard[xPos][yPos - 1].getFill() == ' ') {
+							tempBlock.setFill(myBoard[xPos][yPos].getFill());
+							tempBlock.fillBlock();
+							myBoard[xPos][yPos] = myBoard[xPos][yPos - 1];
+							myBoard[xPos][yPos - 1] = tempBlock;
+
+							tempBlock.setFill(myBoard[xPos][yPos + 1].getFill());
+							tempBlock.fillBlock();
+							myBoard[xPos][yPos + 1] = myBoard[xPos][yPos];
+							myBoard[xPos][yPos] = tempBlock;
+						}
+						break;
+					case 'B': // BC/FG
+						if (myBoard[xPos][yPos - 1].getFill() == ' ' &&
+							myBoard[xPos + 1][yPos - 1].getFill() == ' ') {
+								tempBlock.setFill(myBoard[xPos][yPos].getFill());
+								tempBlock.fillBlock();
+								myBoard[xPos][yPos] = myBoard[xPos][yPos - 1];
+								myBoard[xPos][yPos - 1] = tempBlock;
+
+								tempBlock.setFill(myBoard[xPos + 1][yPos].getFill());
+								tempBlock.fillBlock();
+								myBoard[xPos + 1][yPos] = myBoard[xPos + 1][yPos - 1];
+								myBoard[xPos + 1][yPos - 1] = tempBlock;
+
+								tempBlock.setFill(myBoard[xPos][yPos + 1].getFill());
+								tempBlock.fillBlock();
+								myBoard[xPos][yPos + 1] = myBoard[xPos][yPos];
+								myBoard[xPos][yPos] = tempBlock;
+
+								tempBlock.setFill(myBoard[xPos + 1][yPos + 1].getFill());
+								tempBlock.fillBlock();
+								myBoard[xPos + 1][yPos + 1] = myBoard[xPos + 1][yPos];
+								myBoard[xPos + 1][yPos] = tempBlock;
+						}
+						break;
 				}
+				
 				break;
 			case 'A':
 				// Check if move is legal
