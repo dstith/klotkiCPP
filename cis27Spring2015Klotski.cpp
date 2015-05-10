@@ -416,7 +416,9 @@ void runBoardGame() {
 						// Check if move is legal
 						if (myBoard[xPos][yPos + 1].getFill() == ' ') {
 							// swap
-							tempBlock = myBoard[xPos][yPos];
+							//tempBlock = myBoard[xPos][yPos];
+							tempBlock.setFill(myBoard[xPos][yPos].getFill());
+							tempBlock.fillBlock();
 							myBoard[xPos][yPos] = myBoard[xPos][yPos + 1];
 							myBoard[xPos][yPos + 1] = tempBlock;
 						}
