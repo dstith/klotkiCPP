@@ -487,7 +487,7 @@ void runBoardGame() {
 				cout << "\nInvalid direction.\n";
 				break;
 		}
-	} while (toupper(moveDirection) != ']');
+	} while (toupper(moveDirection) != 'Q');
 }
 
 void searchAry(char blockToMove, Block** boardAry, int rows, int cols, int *xPos, int *yPos) {
