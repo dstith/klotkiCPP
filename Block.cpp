@@ -5,6 +5,7 @@
 
 Block::Block() {
 	fillChar = NULL;
+	name = NULL;
 	rowSize = 2;
 	colSize = 2;
 	block = new char*[colSize];
@@ -15,8 +16,9 @@ Block::Block() {
 	fillBlock();
 }
 
-Block::Block(char fillChar) {
+Block::Block(char fillChar, char name) {
 	this->fillChar = fillChar;
+	this->name = name;
 	rowSize = 2;
 	colSize = 2;
 	block = new char*[colSize];
@@ -27,8 +29,9 @@ Block::Block(char fillChar) {
 	fillBlock();
 }
 
-Block::Block(char fillChar, int rows, int cols) {
+Block::Block(char fillChar, char name, int rows, int cols) {
 	this->fillChar = fillChar;
+	this->name = name;
 	rowSize = rows;
 	colSize = cols;
 	block = new char*[colSize];
@@ -50,8 +53,16 @@ void Block::setFill(char fillChar) {
 	this->fillChar = fillChar;
 }
 
+void Block::setName(char name) {
+	this->name = name;
+}
+
 char Block::getFill() {
 	return fillChar;
+}
+
+char Block::getName() {
+	return name;
 }
 
 void Block::fillBlock() {
