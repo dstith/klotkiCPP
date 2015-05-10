@@ -1,8 +1,8 @@
 /**
  * Program Name: cis27Spring2015Klotski.c
  * Discussion:   
- * Written By:   xxxxxxxxxxxx
- * Date:         2015/04/30
+ * Written By:   D Stith
+ * Date:         2015/05/09
  */
 
 #include <iostream>
@@ -26,6 +26,7 @@ void runBoardGame() {
 	int yPos = NULL;
 	const int rows = 7; // Size of the board that contains the objects
 	const int cols = 6;
+	char boardDisplay[10][8];
 	// char** fillAry; // Pointer that stores address of a 2D array containing chars
 
 	//Block myBoard[rows][cols];
@@ -56,7 +57,7 @@ void runBoardGame() {
 	Block block19(' ');
 	Block block20(' ');
 	Block tempBlock;
-	
+
 	// Put the block objects in the board
 	myBoard[1][1] = block1;
 	myBoard[1][2] = block2;
@@ -78,6 +79,12 @@ void runBoardGame() {
 	myBoard[5][4] = block18;
 	myBoard[5][2] = block19;
 	myBoard[5][3] = block20;
+
+	for (int i = 0; i < 10; i++) {
+		for (int j = 0; j < 8; j++) {
+			boardDisplay[i][j] = 'X';
+		}
+	}
 	
 	/*
 	// Display a board Block object
@@ -118,6 +125,44 @@ void runBoardGame() {
 		// input piece to move
 		// input direction
 		// q to quit
+
+		for (int i = 0; i < 2; i++) {
+			for (int j = 0; j < 2; j++) {
+				boardDisplay[i][j] = myBoard[1][1].getFill();
+				boardDisplay[i][j + 2] = myBoard[1][2].getFill();
+				boardDisplay[i][j + 4] = myBoard[1][3].getFill();
+				boardDisplay[i][j + 6] = myBoard[1][4].getFill();
+
+				boardDisplay[i + 2][j] = myBoard[2][1].getFill();
+				boardDisplay[i + 2][j + 2] = myBoard[2][2].getFill();
+				boardDisplay[i + 2][j + 4] = myBoard[2][3].getFill();
+				boardDisplay[i + 2][j + 6] = myBoard[2][4].getFill();
+
+				boardDisplay[i + 4][j] = myBoard[3][1].getFill();
+				boardDisplay[i + 4][j + 2] = myBoard[3][2].getFill();
+				boardDisplay[i + 4][j + 4] = myBoard[3][3].getFill();
+				boardDisplay[i + 4][j + 6] = myBoard[3][4].getFill();
+
+				boardDisplay[i + 6][j] = myBoard[4][1].getFill();
+				boardDisplay[i + 6][j + 2] = myBoard[4][2].getFill();
+				boardDisplay[i + 6][j + 4] = myBoard[4][3].getFill();
+				boardDisplay[i + 6][j + 6] = myBoard[4][4].getFill();
+
+				boardDisplay[i + 8][j] = myBoard[5][1].getFill();
+				boardDisplay[i + 8][j + 2] = myBoard[5][2].getFill();
+				boardDisplay[i + 8][j + 4] = myBoard[5][3].getFill();
+				boardDisplay[i + 8][j + 6] = myBoard[5][4].getFill();
+			}
+		}
+
+		for (int i = 0; i < 10; i++) {
+			for (int j = 0; j < 8; j++) {
+				cout << boardDisplay[i][j];
+			}
+			cout << endl;
+		}
+
+
 		cout << "Enter direction (Q to quit): ";
 		cin >> moveDirection;
 		if (toupper(moveDirection) != 'Q') {
@@ -128,90 +173,13 @@ void runBoardGame() {
 		
 			// Search the board for the block and store xPos and yPos
 			searchAry(blockToMove, myBoard, rows, cols, &xPos, &yPos);
+			cout << "\nX position: " << xPos << "\nY position: " << yPos << endl << endl;
 		}
 		//cout << "xpos = " << xPos << " ypos = " << yPos << endl;
 		switch (toupper(moveDirection)) {
 			case 'Q':
 				break;
 			case 'W':
-				switch (toupper(blockToMove)) {
-					case 'N':
-					case 'O':
-					case 'Q':
-					case 'R':
-						// Check if move is legal
-						if (myBoard[xPos][yPos - 1].getFill() == ' ') {
-							// swap
-							tempBlock.setFill(myBoard[xPos][yPos].getFill());
-							tempBlock.fillBlock();
-							myBoard[xPos][yPos] = myBoard[xPos][yPos - 1];
-							myBoard[xPos][yPos - 1] = tempBlock;
-						}
-						break;
-					case 'J': // JK horizontal block
-						// Check if move is legal
-						if (myBoard[xPos][yPos - 1].getFill() == ' ' &&
-							myBoard[xPos + 1][yPos - 1].getFill() == ' ') {
-								// swap
-								tempBlock.setFill(myBoard[xPos][yPos].getFill());
-								tempBlock.fillBlock();
-								myBoard[xPos][yPos] = myBoard[xPos][yPos - 1];
-								myBoard[xPos][yPos - 1] = tempBlock;
-
-								tempBlock.setFill(myBoard[xPos + 1][yPos].getFill());
-								tempBlock.fillBlock();
-								myBoard[xPos + 1][yPos] = myBoard[xPos + 1][yPos - 1];
-								myBoard[xPos + 1][yPos - 1] = tempBlock;
-						}
-						break;
-					case 'A': // vertical blocks A/E, D/H, I/M, L/P
-					case 'D':
-					case 'I':
-					case 'L':
-						// Check if move is legal
-						if (myBoard[xPos][yPos - 1].getFill() == ' ') {
-							// swap
-							tempBlock.setFill(myBoard[xPos][yPos].getFill());
-							tempBlock.fillBlock();
-							myBoard[xPos][yPos] = myBoard[xPos][yPos - 1];
-							myBoard[xPos][yPos - 1] = tempBlock;
-
-							tempBlock.setFill(myBoard[xPos][yPos + 1].getFill());
-							tempBlock.fillBlock();
-							myBoard[xPos][yPos + 1] = myBoard[xPos][yPos];
-							myBoard[xPos][yPos] = tempBlock;
-						}
-						break;
-					case 'B': // BC/FG
-						// Check if move is legal
-						if (myBoard[xPos][yPos - 1].getFill() == ' ' &&
-							myBoard[xPos + 1][yPos - 1].getFill() == ' ') {
-								// swap
-								tempBlock.setFill(myBoard[xPos][yPos].getFill());
-								tempBlock.fillBlock();
-								myBoard[xPos][yPos] = myBoard[xPos][yPos - 1];
-								myBoard[xPos][yPos - 1] = tempBlock;
-
-								tempBlock.setFill(myBoard[xPos + 1][yPos].getFill());
-								tempBlock.fillBlock();
-								myBoard[xPos + 1][yPos] = myBoard[xPos + 1][yPos - 1];
-								myBoard[xPos + 1][yPos - 1] = tempBlock;
-
-								tempBlock.setFill(myBoard[xPos][yPos + 1].getFill());
-								tempBlock.fillBlock();
-								myBoard[xPos][yPos + 1] = myBoard[xPos][yPos];
-								myBoard[xPos][yPos] = tempBlock;
-
-								tempBlock.setFill(myBoard[xPos + 1][yPos + 1].getFill());
-								tempBlock.fillBlock();
-								myBoard[xPos + 1][yPos + 1] = myBoard[xPos + 1][yPos];
-								myBoard[xPos + 1][yPos] = tempBlock;
-						}
-						break;
-				}
-				break;
-			case 'A': 
-				// Check if move is legal
 				switch (toupper(blockToMove)) {
 					case 'N':
 					case 'O':
@@ -228,13 +196,18 @@ void runBoardGame() {
 						break;
 					case 'J': // JK horizontal block
 						// Check if move is legal
-						if (myBoard[xPos - 1][yPos].getFill() == ' ') {
+						if (myBoard[xPos - 1][yPos].getFill() == ' ' &&
+							myBoard[xPos - 1][yPos + 1].getFill() == ' ') {
 								// swap
-								tempBlock.setFill(myBoard[xPos - 1][yPos].getFill());
+								tempBlock.setFill(myBoard[xPos][yPos].getFill());
 								tempBlock.fillBlock();
-								myBoard[xPos - 1][yPos] = myBoard[xPos][yPos];
-								myBoard[xPos][yPos] = myBoard[xPos + 1][yPos];
-								myBoard[xPos + 1][yPos] = tempBlock;
+								myBoard[xPos][yPos] = myBoard[xPos - 1][yPos];
+								myBoard[xPos - 1][yPos] = tempBlock;
+
+								tempBlock.setFill(myBoard[xPos][yPos + 1].getFill());
+								tempBlock.fillBlock();
+								myBoard[xPos][yPos + 1] = myBoard[xPos - 1][yPos + 1];
+								myBoard[xPos - 1][yPos + 1] = tempBlock;
 						}
 						break;
 					case 'A': // vertical blocks A/E, D/H, I/M, L/P
@@ -242,18 +215,17 @@ void runBoardGame() {
 					case 'I':
 					case 'L':
 						// Check if move is legal
-						if (myBoard[xPos - 1][yPos].getFill() == ' ' && 
-							myBoard[xPos - 1][yPos + 1].getFill() == ' ') {
+						if (myBoard[xPos - 1][yPos].getFill() == ' ') {
 							// swap
-							tempBlock.setFill(myBoard[xPos - 1][yPos].getFill());
+							tempBlock.setFill(myBoard[xPos][yPos].getFill());
 							tempBlock.fillBlock();
-							myBoard[xPos - 1][yPos] = myBoard[xPos][yPos];
-							myBoard[xPos][yPos] = tempBlock;
+							myBoard[xPos][yPos] = myBoard[xPos - 1][yPos];
+							myBoard[xPos - 1][yPos] = tempBlock;
 
-							tempBlock.setFill(myBoard[xPos - 1][yPos + 1].getFill());
+							tempBlock.setFill(myBoard[xPos + 1][yPos].getFill());
 							tempBlock.fillBlock();
-							myBoard[xPos - 1][yPos + 1] = myBoard[xPos][yPos + 1];
-							myBoard[xPos][yPos + 1] = tempBlock;
+							myBoard[xPos + 1][yPos] = myBoard[xPos][yPos];
+							myBoard[xPos][yPos] = tempBlock;
 						}
 						break;
 					case 'B': // BC/FG
@@ -261,49 +233,90 @@ void runBoardGame() {
 						if (myBoard[xPos - 1][yPos].getFill() == ' ' &&
 							myBoard[xPos - 1][yPos + 1].getFill() == ' ') {
 								// swap
-								tempBlock.setFill(myBoard[xPos - 1][yPos].getFill());
-								tempBlock.fillBlock();
-								myBoard[xPos - 1][yPos] = myBoard[xPos][yPos];
-								myBoard[xPos][yPos] = tempBlock;
-
-								tempBlock.setFill(myBoard[xPos - 1][yPos + 1].getFill());
-								tempBlock.fillBlock();
-								myBoard[xPos - 1][yPos + 1] = myBoard[xPos][yPos + 1];
-								myBoard[xPos][yPos + 1] = tempBlock;
-
 								tempBlock.setFill(myBoard[xPos][yPos].getFill());
 								tempBlock.fillBlock();
-								myBoard[xPos][yPos] = myBoard[xPos + 1][yPos];
-								myBoard[xPos + 1][yPos] = tempBlock;
+								myBoard[xPos][yPos] = myBoard[xPos - 1][yPos];
+								myBoard[xPos - 1][yPos] = tempBlock;
 
 								tempBlock.setFill(myBoard[xPos][yPos + 1].getFill());
 								tempBlock.fillBlock();
-								myBoard[xPos][yPos + 1] = myBoard[xPos + 1][yPos + 1];
-								myBoard[xPos + 1][yPos + 1] = tempBlock;
+								myBoard[xPos][yPos + 1] = myBoard[xPos - 1][yPos + 1];
+								myBoard[xPos - 1][yPos + 1] = tempBlock;
+
+								tempBlock.setFill(myBoard[xPos + 1][yPos].getFill());
+								tempBlock.fillBlock();
+								myBoard[xPos + 1][yPos] = myBoard[xPos][yPos];
+								myBoard[xPos][yPos] = tempBlock;
+
+								tempBlock.setFill(myBoard[xPos + 1][yPos + 1].getFill());
+								tempBlock.fillBlock();
+								myBoard[xPos + 1][yPos + 1] = myBoard[xPos][yPos + 1];
+								myBoard[xPos][yPos + 1] = tempBlock;
 						}
 						break;
 				}
 				break;
-			case 'S':
+			case 'A': 
+				// Check if move is legal
 				switch (toupper(blockToMove)) {
 					case 'N':
 					case 'O':
 					case 'Q':
 					case 'R':
 						// Check if move is legal
-						if (myBoard[xPos][yPos + 1].getFill() == ' ') {
+						if (myBoard[xPos][yPos - 1].getFill() == ' ') {
 							// swap
 							tempBlock.setFill(myBoard[xPos][yPos].getFill());
 							tempBlock.fillBlock();
-							myBoard[xPos][yPos] = myBoard[xPos][yPos + 1];
-							myBoard[xPos][yPos + 1] = tempBlock;
+							myBoard[xPos][yPos] = myBoard[xPos][yPos - 1];
+							myBoard[xPos][yPos - 1] = tempBlock;
 						}
 						break;
 					case 'J': // JK horizontal block
 						// Check if move is legal
-						if (myBoard[xPos][yPos + 1].getFill() == ' ' &&
-							myBoard[xPos + 1][yPos + 1].getFill() == ' ') {
+						if (myBoard[xPos][yPos - 1].getFill() == ' ') {
 								// swap
+								tempBlock.setFill(myBoard[xPos][yPos - 1].getFill());
+								tempBlock.fillBlock();
+								myBoard[xPos][yPos - 1] = myBoard[xPos][yPos];
+								myBoard[xPos][yPos] = myBoard[xPos][yPos + 1];
+								myBoard[xPos][yPos + 1] = tempBlock;
+						}
+						break;
+					case 'A': // vertical blocks A/E, D/H, I/M, L/P
+					case 'D':
+					case 'I':
+					case 'L':
+						// Check if move is legal
+						if (myBoard[xPos][yPos - 1].getFill() == ' ' && 
+							myBoard[xPos + 1][yPos - 1].getFill() == ' ') {
+							// swap
+							tempBlock.setFill(myBoard[xPos][yPos - 1].getFill());
+							tempBlock.fillBlock();
+							myBoard[xPos][yPos - 1] = myBoard[xPos][yPos];
+							myBoard[xPos][yPos] = tempBlock;
+
+							tempBlock.setFill(myBoard[xPos + 1][yPos - 1].getFill());
+							tempBlock.fillBlock();
+							myBoard[xPos + 1][yPos - 1] = myBoard[xPos + 1][yPos];
+							myBoard[xPos + 1][yPos] = tempBlock;
+						}
+						break;
+					case 'B': // BC/FG
+						// Check if move is legal
+						if (myBoard[xPos][yPos - 1].getFill() == ' ' &&
+							myBoard[xPos + 1][yPos - 1].getFill() == ' ') {
+								// swap
+								tempBlock.setFill(myBoard[xPos][yPos - 1].getFill());
+								tempBlock.fillBlock();
+								myBoard[xPos][yPos - 1] = myBoard[xPos][yPos];
+								myBoard[xPos][yPos] = tempBlock;
+
+								tempBlock.setFill(myBoard[xPos + 1][yPos - 1].getFill());
+								tempBlock.fillBlock();
+								myBoard[xPos + 1][yPos - 1] = myBoard[xPos + 1][yPos];
+								myBoard[xPos + 1][yPos] = tempBlock;
+
 								tempBlock.setFill(myBoard[xPos][yPos].getFill());
 								tempBlock.fillBlock();
 								myBoard[xPos][yPos] = myBoard[xPos][yPos + 1];
@@ -315,53 +328,9 @@ void runBoardGame() {
 								myBoard[xPos + 1][yPos + 1] = tempBlock;
 						}
 						break;
-					case 'A': // vertical blocks A/E, D/H, I/M, L/P
-					case 'D':
-					case 'I':
-					case 'L':
-						// Check if move is legal
-						if (myBoard[xPos][yPos + 2].getFill() == ' ') {
-							// swap
-							tempBlock.setFill(myBoard[xPos][yPos + 2].getFill());
-							tempBlock.fillBlock();
-							myBoard[xPos][yPos + 2] = myBoard[xPos][yPos];
-							myBoard[xPos][yPos] = tempBlock;
-
-							tempBlock.setFill(myBoard[xPos][yPos + 1].getFill());
-							tempBlock.fillBlock();
-							myBoard[xPos][yPos + 1] = myBoard[xPos][yPos + 2];
-							myBoard[xPos][yPos + 2] = tempBlock;
-						}
-						break;
-					case 'B': // BC/FG
-						// Check if move is legal
-						if (myBoard[xPos][yPos + 2].getFill() == ' ' &&
-							myBoard[xPos + 1][yPos + 2].getFill() == ' ') {
-							// swap
-							tempBlock.setFill(myBoard[xPos][yPos + 2].getFill());
-							tempBlock.fillBlock();
-							myBoard[xPos][yPos + 2] = myBoard[xPos][yPos];
-							myBoard[xPos][yPos] = tempBlock;
-
-							tempBlock.setFill(myBoard[xPos + 1][yPos + 2].getFill());
-							tempBlock.fillBlock();
-							myBoard[xPos + 1][yPos + 2] = myBoard[xPos + 1][yPos];
-							myBoard[xPos + 1][yPos] = tempBlock;
-
-							tempBlock.setFill(myBoard[xPos][yPos + 2].getFill());
-							tempBlock.fillBlock();
-							myBoard[xPos][yPos + 2] = myBoard[xPos][yPos + 1];
-							myBoard[xPos][yPos + 1] = tempBlock;
-
-							tempBlock.setFill(myBoard[xPos + 1][yPos + 2].getFill());
-							tempBlock.fillBlock();
-							myBoard[xPos + 1][yPos + 2] = myBoard[xPos + 1][yPos + 1];
-							myBoard[xPos + 1][yPos + 1] = tempBlock;
-						}
-						break;
 				}
 				break;
-			case 'D': 
+			case 'S': // Move block down
 				switch (toupper(blockToMove)) {
 					case 'N':
 					case 'O':
@@ -378,17 +347,18 @@ void runBoardGame() {
 						break;
 					case 'J': // JK horizontal block
 						// Check if move is legal
-						if (myBoard[xPos + 1][yPos].getFill() == ' ') {
+						if (myBoard[xPos + 1][yPos].getFill() == ' ' &&
+							myBoard[xPos + 1][yPos + 1].getFill() == ' ') {
 								// swap
 								tempBlock.setFill(myBoard[xPos][yPos].getFill());
 								tempBlock.fillBlock();
-								myBoard[xPos][yPos] = myBoard[xPos + 2][yPos];
-								myBoard[xPos + 2][yPos] = tempBlock;
+								myBoard[xPos][yPos] = myBoard[xPos + 1][yPos];
+								myBoard[xPos + 1][yPos] = tempBlock;
 
-								tempBlock.setFill(myBoard[xPos + 1][yPos].getFill());
+								tempBlock.setFill(myBoard[xPos][yPos + 1].getFill());
 								tempBlock.fillBlock();
-								myBoard[xPos + 1][yPos] = myBoard[xPos + 2][yPos];
-								myBoard[xPos + 2][yPos] = tempBlock;
+								myBoard[xPos][yPos + 1] = myBoard[xPos + 1][yPos + 1];
+								myBoard[xPos + 1][yPos + 1] = tempBlock;
 						}
 						break;
 					case 'A': // vertical blocks A/E, D/H, I/M, L/P
@@ -396,18 +366,17 @@ void runBoardGame() {
 					case 'I':
 					case 'L':
 						// Check if move is legal
-						if (myBoard[xPos + 1][yPos].getFill() == ' ' &&
-							myBoard[xPos + 1][yPos + 1].getFill() == ' ') {
+						if (myBoard[xPos + 2][yPos].getFill() == ' ') {
 							// swap
-							tempBlock.setFill(myBoard[xPos][yPos].getFill());
+							tempBlock.setFill(myBoard[xPos + 2][yPos].getFill());
 							tempBlock.fillBlock();
-							myBoard[xPos][yPos] = myBoard[xPos + 1][yPos];
-							myBoard[xPos + 1][yPos] = tempBlock;
+							myBoard[xPos + 2][yPos] = myBoard[xPos][yPos];
+							myBoard[xPos][yPos] = tempBlock;
 
-							tempBlock.setFill(myBoard[xPos + 1][yPos + 1].getFill());
+							tempBlock.setFill(myBoard[xPos + 1][yPos].getFill());
 							tempBlock.fillBlock();
-							myBoard[xPos][yPos + 1] = myBoard[xPos + 1][yPos + 1];
-							myBoard[xPos + 1][yPos + 1] = tempBlock;
+							myBoard[xPos + 1][yPos] = myBoard[xPos + 2][yPos];
+							myBoard[xPos + 2][yPos] = tempBlock;
 						}
 						break;
 					case 'B': // BC/FG
@@ -415,25 +384,101 @@ void runBoardGame() {
 						if (myBoard[xPos + 2][yPos].getFill() == ' ' &&
 							myBoard[xPos + 2][yPos + 1].getFill() == ' ') {
 							// swap
+							tempBlock.setFill(myBoard[xPos + 2][yPos].getFill());
+							tempBlock.fillBlock();
+							myBoard[xPos + 2][yPos] = myBoard[xPos][yPos];
+							myBoard[xPos][yPos] = tempBlock;
+
+							tempBlock.setFill(myBoard[xPos + 2][yPos + 1].getFill());
+							tempBlock.fillBlock();
+							myBoard[xPos + 2][yPos + 1] = myBoard[xPos][yPos + 1];
+							myBoard[xPos][yPos + 1] = tempBlock;
+
+							tempBlock.setFill(myBoard[xPos + 2][yPos].getFill());
+							tempBlock.fillBlock();
+							myBoard[xPos + 2][yPos] = myBoard[xPos + 1][yPos];
+							myBoard[xPos + 1][yPos] = tempBlock;
+
+							tempBlock.setFill(myBoard[xPos + 2][yPos + 1].getFill());
+							tempBlock.fillBlock();
+							myBoard[xPos + 2][yPos + 1] = myBoard[xPos + 1][yPos + 1];
+							myBoard[xPos + 1][yPos + 1] = tempBlock;
+						}
+						break;
+				}
+				break;
+			case 'D': // Move block right
+				switch (toupper(blockToMove)) {
+					case 'N':
+					case 'O':
+					case 'Q':
+					case 'R':
+						// Check if move is legal
+						if (myBoard[xPos][yPos + 1].getFill() == ' ') {
+							// swap
+							tempBlock = myBoard[xPos][yPos];
+							myBoard[xPos][yPos] = myBoard[xPos][yPos + 1];
+							myBoard[xPos][yPos + 1] = tempBlock;
+						}
+						break;
+					case 'J': // JK horizontal block
+						// Check if move is legal
+						if (myBoard[xPos][yPos + 2].getFill() == ' ') {
+								// swap
+								tempBlock.setFill(myBoard[xPos][yPos].getFill());
+								tempBlock.fillBlock();
+								myBoard[xPos][yPos] = myBoard[xPos][yPos + 2];
+								myBoard[xPos][yPos + 2] = tempBlock;
+
+								tempBlock.setFill(myBoard[xPos][yPos + 1].getFill());
+								tempBlock.fillBlock();
+								myBoard[xPos][yPos + 1] = myBoard[xPos][yPos + 2];
+								myBoard[xPos][yPos + 2] = tempBlock;
+						}
+						break;
+					case 'A': // vertical blocks A/E, D/H, I/M, L/P
+					case 'D':
+					case 'I':
+					case 'L': 
+						// Check if move is legal
+						if (myBoard[xPos][yPos + 1].getFill() == ' ' &&
+							myBoard[xPos + 1][yPos + 1].getFill() == ' ') {
+							// swap
 							tempBlock.setFill(myBoard[xPos][yPos].getFill());
 							tempBlock.fillBlock();
-							myBoard[xPos][yPos] = myBoard[xPos + 2][yPos];
-							myBoard[xPos + 2][yPos] = tempBlock;
-
-							tempBlock.setFill(myBoard[xPos][yPos + 1].getFill());
-							tempBlock.fillBlock();
-							myBoard[xPos][yPos + 1] = myBoard[xPos + 2][yPos + 1];
-							myBoard[xPos + 2][yPos + 2] = tempBlock;
+							myBoard[xPos][yPos] = myBoard[xPos][yPos + 1];
+							myBoard[xPos][yPos + 1] = tempBlock;
 
 							tempBlock.setFill(myBoard[xPos + 1][yPos].getFill());
 							tempBlock.fillBlock();
-							myBoard[xPos + 1][yPos] = myBoard[xPos + 2][yPos];
-							myBoard[xPos + 2][yPos] = tempBlock;
+							myBoard[xPos + 1][yPos] = myBoard[xPos + 1][yPos + 1];
+							myBoard[xPos + 1][yPos + 1] = tempBlock;
+						}
+						break;
+					case 'B': // BC/FG
+						// Check if move is legal
+						if (myBoard[xPos][yPos + 2].getFill() == ' ' &&
+							myBoard[xPos + 1][yPos + 2].getFill() == ' ') {
+							// swap
+							tempBlock.setFill(myBoard[xPos][yPos].getFill());
+							tempBlock.fillBlock();
+							myBoard[xPos][yPos] = myBoard[xPos][yPos + 2];
+							myBoard[xPos][yPos + 2] = tempBlock;
+
+							tempBlock.setFill(myBoard[xPos + 1][yPos].getFill());
+							tempBlock.fillBlock();
+							myBoard[xPos + 1][yPos] = myBoard[xPos + 1][yPos + 2];
+							myBoard[xPos + 1][yPos + 2] = tempBlock;
+
+							tempBlock.setFill(myBoard[xPos][yPos + 1].getFill());
+							tempBlock.fillBlock();
+							myBoard[xPos][yPos + 1] = myBoard[xPos][yPos + 2];
+							myBoard[xPos][yPos + 2] = tempBlock;
 
 							tempBlock.setFill(myBoard[xPos + 1][yPos + 1].getFill());
 							tempBlock.fillBlock();
-							myBoard[xPos + 1][yPos + 1] = myBoard[xPos + 2][yPos + 1];
-							myBoard[xPos + 2][yPos + 1] = tempBlock;
+							myBoard[xPos + 1][yPos + 1] = myBoard[xPos + 1][yPos + 2];
+							myBoard[xPos + 1][yPos + 2] = tempBlock;
 						}
 						break;
 				}
@@ -442,46 +487,7 @@ void runBoardGame() {
 				cout << "\nInvalid direction.\n";
 				break;
 		}
-	} while (toupper(moveDirection) != 'Q');
-	/*
-	// Declare and define objects of various sizes
-	// This block of code is an example but probably won't be used
-	// since I am going to put blocks together somehow when moving
-	// blocks that are larger than the default size
-	Block myBlock1('A', 2, 4);
-	Block myBlock2('B', 2, 4);
-	Block myBlock3('C', 2, 4);
-	Block myBlock4('D', 2, 4);
-	Block myBlock5('E');
-	Block myBlock6('F');
-	Block myBlock7('G');
-	Block myBlock8('H');
-	Block myBlock9('I', 4, 2);
-	Block myBlock10('J', 4, 4);
-	Block myBlockBlank1(' ');
-	Block myBlockBlank2(' ');
-	
-	// Print the blocks
-	myBlock1.printBlock();
-	cout << endl;
-	myBlock2.printBlock();
-	cout << endl;
-	myBlock3.printBlock();
-	cout << endl;
-	myBlock4.printBlock();
-	cout << endl;
-	myBlock5.printBlock();
-	cout << endl;
-	myBlock6.printBlock();
-	cout << endl;
-	myBlock7.printBlock();
-	cout << endl;
-	myBlock8.printBlock();
-	cout << endl;
-	myBlock9.printBlock();
-	cout << endl;
-	myBlock10.printBlock();
-	*/
+	} while (toupper(moveDirection) != ']');
 }
 
 void searchAry(char blockToMove, Block** boardAry, int rows, int cols, int *xPos, int *yPos) {
