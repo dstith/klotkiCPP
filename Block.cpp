@@ -3,50 +3,48 @@
  */
 #include "Block.h"
 
-Block::Block() {
+Block::Block() { // Default constructor
 	fillChar = NULL;
+	sprScale = 0.5;
+	if (!blockTexture.loadFromFile("gems.png")) {
+		exit(1);
+	}
+	fillSprite.setTexture(blockTexture);
+	fillSprite.setTextureRect(sf::IntRect(0, 0, 0, 0));
+	fillSprite.setScale(sprScale, sprScale);
 	name = NULL;
-	rowSize = 2;
-	colSize = 2;
-	block = new char*[colSize];
-	for (int i = 0; i < colSize; i++) {
-		block[i] = new char[rowSize];
-	}
-
-	fillBlock();
 }
 
-Block::Block(char fillChar, char name) {
+Block::Block(char fillChar, char name, float scale) {
 	this->fillChar = fillChar;
-	this->name = name;
-	rowSize = 2;
-	colSize = 2;
-	block = new char*[colSize];
-	for (int i = 0; i < colSize; i++) {
-		block[i] = new char[rowSize];
+	sprScale = scale;
+	if (!blockTexture.loadFromFile("gems.png")) {
+		exit(1);
 	}
-
-	fillBlock();
+	fillSprite.setTexture(blockTexture);
+	fillSprite.setTextureRect(sf::IntRect(0, 0, 0, 0));
+	fillSprite.setScale(sprScale, sprScale);
+	this->name = name;
 }
 
-Block::Block(char fillChar, char name, int rows, int cols) {
+Block::Block(char fillChar, char name, int imgX, int imgY, int imgWidth, int imgHeight, float scale) {
 	this->fillChar = fillChar;
-	this->name = name;
-	rowSize = rows;
-	colSize = cols;
-	block = new char*[colSize];
-	for (int i = 0; i < colSize; i++) {
-		block[i] = new char[rowSize];
+	sprScale = scale;
+	if (!blockTexture.loadFromFile("gems.png")) {
+		exit(1);
 	}
+	fillSprite.setTexture(blockTexture);
+	fillSprite.setTextureRect(sf::IntRect(imgX, imgY, imgWidth, imgHeight));
+	fillSprite.setScale(sprScale, sprScale);
+	this->name = name;
+}
 
-	fillBlock();
+Block::Block(const Block &obj) { // Copy constructor
+	ptr = new int;
+	*ptr = *obj.ptr;
 }
 
 Block::~Block() {
-	for (int i = 0; i < colSize; i++) {
-		delete[] block[i];
-	}
-	delete[] block;
 }
 
 void Block::setFill(char fillChar) {
@@ -61,27 +59,10 @@ char Block::getFill() {
 	return fillChar;
 }
 
+sf::Sprite Block::getSprite() {
+	return fillSprite;
+}
+
 char Block::getName() {
 	return name;
-}
-
-void Block::fillBlock() {
-	for (int i = 0; i < colSize; i++) {
-		for (int j = 0; j < rowSize; j++) {
-			block[i][j] = fillChar;
-		}
-	}
-}
-
-void Block::printBlock() {
-	for (int i = 0; i < colSize; i++) {	
-		for (int j = 0; j < rowSize; j++) {
-			cout << block[i][j];
-		}
-		cout << endl;
-	}
-}
-
-char** Block::getArray() {
-	return block;
 }
