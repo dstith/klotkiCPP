@@ -26,10 +26,9 @@ class Block {
 		~Block();
 		void setFill(char);
 		void setName(char);
-		char getFill();
-		sf::Sprite getSprite();
-		char getName();
-		void printBlock();
+		char getFill() const;
+		sf::Sprite getSprite() const;
+		char getName() const;
 }; // End of Block class
 
 #endif
