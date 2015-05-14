@@ -19,7 +19,7 @@ class Block {
 		char name;
 		int *ptr;
 	public:
-		Block();
+		Block(); // Default constructor
 		Block(char, char, float);
 		Block(char, char, int, int, int, int, float);
 		Block(const Block &); // Copy constructor
