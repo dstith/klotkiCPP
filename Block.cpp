@@ -55,14 +55,14 @@ void Block::setName(char name) {
 	this->name = name;
 }
 
-char Block::getFill() {
+char Block::getFill() const {
 	return fillChar;
 }
 
-sf::Sprite Block::getSprite() {
+sf::Sprite Block::getSprite() const {
 	return fillSprite;
 }
 
-char Block::getName() {
+char Block::getName() const {
 	return name;
 }
