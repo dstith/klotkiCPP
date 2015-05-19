@@ -1,68 +1,34 @@
 /**
- * Block implementation file
+ * Block header file
  */
-#include "Block.h"
+#ifndef BLOCK_H
+#define BLOCK_H
 
-Block::Block() { // Default constructor
-	fillChar = NULL;
-	sprScale = 0.5;
-	if (!blockTexture.loadFromFile("gems.png")) {
-		exit(1);
-	}
-	fillSprite.setTexture(blockTexture);
-	fillSprite.setTextureRect(sf::IntRect(0, 0, 0, 0));
-	fillSprite.setScale(sprScale, sprScale);
-	name = NULL;
-}
+#include <SFML/Graphics.hpp> // For shapes
+#include <SFML/Graphics/Image.hpp> // For image files
+#include <iostream>
+using namespace std;
 
-Block::Block(char fillChar, char name, float scale) {
-	this->fillChar = fillChar;
-	sprScale = scale;
-	if (!blockTexture.loadFromFile("gems.png")) {
-		exit(1);
-	}
-	fillSprite.setTexture(blockTexture);
-	fillSprite.setTextureRect(sf::IntRect(0, 0, 0, 0));
-	fillSprite.setScale(sprScale, sprScale);
-	this->name = name;
-}
+// Block class definition
+class Block {
+	private:
+		char fillChar;
+		sf::Texture blockTexture;
+		sf::Sprite fillSprite;
+		float sprScale;
+		char name;
+		int *ptr;
+	public:
+		Block();
+		Block(char, char, float);
+		Block(char, char, int, int, int, int, float);
+		Block(const Block &); // Copy constructor
+		~Block();
+		void setFill(char);
+		void setName(char);
+		char getFill() const;
+		sf::Sprite getSprite() const;
+		char getName() const;
+}; // End of Block class
 
-Block::Block(char fillChar, char name, int imgX, int imgY, int imgWidth, int imgHeight, float scale) {
-	this->fillChar = fillChar;
-	sprScale = scale;
-	if (!blockTexture.loadFromFile("gems.png")) {
-		exit(1);
-	}
-	fillSprite.setTexture(blockTexture);
-	fillSprite.setTextureRect(sf::IntRect(imgX, imgY, imgWidth, imgHeight));
-	fillSprite.setScale(sprScale, sprScale);
-	this->name = name;
-}
-
-Block::Block(const Block &obj) { // Copy constructor
-	ptr = new int;
-	*ptr = *obj.ptr;
-}
-
-Block::~Block() {
-}
-
-void Block::setFill(char fillChar) {
-	this->fillChar = fillChar;
-}
-
-void Block::setName(char name) {
-	this->name = name;
-}
-
-char Block::getFill() const {
-	return fillChar;
-}
-
-sf::Sprite Block::getSprite() const {
-	return fillSprite;
-}
-
-char Block::getName() const {
-	return name;
-}
+#endif
